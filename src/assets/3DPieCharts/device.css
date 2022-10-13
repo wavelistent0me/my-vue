@@ -1,0 +1,53 @@
+.__device_view_body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+}
+
+.__device_point_spot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: #fff;
+  margin-left: -2px;
+  margin-top: -2px;
+}
+
+.__device_point_window {
+  position: absolute;
+  /* background-color: #178fff33; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .__line_spot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: #fff;
+  border-radius: 50%;
+} */
+
+.__device_point_window .name {
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.__device_point_window .number {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.__window_line {
+  height: 1px;
+  position: absolute;
+  background-color: #fff;
+  transform-origin: 0 center;
+}

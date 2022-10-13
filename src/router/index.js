@@ -1,13 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Echarts from "@/views/Echarts";
+import Index from "@/views/Index";
+import Pinchart from "@/views/Pinchart";
+import Login from "@/views/Login";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
     path: '/',
     name: 'Home',
+    meta: {role: ["admin","editor"]},
     component: Home
   },
   {
@@ -19,7 +29,23 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
-  }
+  },
+  {
+    path: '/echarts',
+    name: 'Echarts',
+    meta:{role: ["admin", "editor"]},
+    component: Echarts
+  },
+  {
+    path: '/index',
+    name: 'Index',
+    component: Index
+  },
+  {
+    path: '/pinchart',
+    name: 'Pinchart',
+    component: Pinchart
+  },
 ]
 
 const router = new VueRouter({
