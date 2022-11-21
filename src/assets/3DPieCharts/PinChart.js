@@ -76,7 +76,6 @@ function initChart (data) {
 
     group.add(c)
 
-
     // 添加线段
     let line_r = pin_r * 0.8
     let middle = (thetaStart + thetaEnd) / 2
@@ -99,13 +98,11 @@ function initChart (data) {
     c.userData.device = device
 
     thetaStart = thetaEnd
-
   }
 
   // let c = createFanShaped(3, 0, 60 * Math.PI / 180, 0xff0000)
   // group.add(c)
   group.position.setZ(0.1)
-
 
   scene.add(group)
 }
@@ -172,9 +169,7 @@ function createCircle (size, color, z, opacity, shadow) {
   plane.position.setZ(z)
 
   scene.add(plane)
-
 }
-
 
 (function (global) {
   // 组件的渲染管理
@@ -207,14 +202,10 @@ function createCircle (size, color, z, opacity, shadow) {
   }
 })(window);
 
-
-
 (function (global) {
 
   let temp_material = null
   let elementBody = document.querySelector('.app')
-
-
 
   /**
    * 不含3d模型的基类
@@ -332,7 +323,6 @@ function createCircle (size, color, z, opacity, shadow) {
       this._isTop = !!bool
     }
 
-
     show () {
       if (!this._show) {
         this._show = true
@@ -419,7 +409,6 @@ function createCircle (size, color, z, opacity, shadow) {
     }
   }
 
-
   class DeviceView extends BaseElement {
     constructor(opt) {
       super({
@@ -450,15 +439,15 @@ function createCircle (size, color, z, opacity, shadow) {
       let content = document.createElement('div')
       content.className = '__device_point_spot'
 
-//   点
+    //   点
     content.style.top = this._domOffset[1] + 'px'
     content.style.left = this._domOffset[0] + 'px'
       body.appendChild(content)
 
       let window = document.createElement('div')
       window.className = '__device_point_window'
-//字
-      this._setWrapperStyle(window, this._domOffset, 20, 80)
+      //文字DOM
+      this._setWrapperStyle(window, this._domOffset, 30, 80)
 
       let span = document.createElement('div')
       span.className = 'name'
@@ -558,8 +547,6 @@ function createCircle (size, color, z, opacity, shadow) {
       typeof this._click === 'function' && this._click(extData)
     }
 
-
-
     destroy () {
       let dom = super.getElement()
       dom.removeEventListener('click', this._clickHandle, false)
@@ -617,7 +604,6 @@ function createCircle (size, color, z, opacity, shadow) {
     return [line1, line2]
   }
 
-
   function getAngle (px, py, mx, my) {
     var x = Math.abs(px - mx);
     var y = Math.abs(py - my);
@@ -642,7 +628,5 @@ function createCircle (size, color, z, opacity, shadow) {
       }
     }
     return angle;
-
   }
-
 })(window);

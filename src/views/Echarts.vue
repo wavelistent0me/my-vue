@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <div id="main" style="width: 100%;height:400px;"></div>
+    <div id="main2" style="width: 50%;height:400px;"></div>
   </div>
 </template>
 
@@ -119,8 +120,8 @@ export default {
     var dataList = this.Sorted(this.list, "goodsUnitName");
     var listkg = this.fillList(dataList[0]);
     var listj = this.fillList(dataList[1]);
-    var myChart = echarts.init(document.getElementById('main'));
 
+    var myChart = echarts.init(document.getElementById('main'));
     var option = {
       title: {
         text: '价格浮动图',
@@ -138,11 +139,20 @@ export default {
       yAxis: [
         {
           type: 'value',
-          name: 'kg'
+          name: 'kg',
+          //y轴背景线虚线
+          splitLine: {
+            lineStyle:{
+              type: "dashed",
+            }
+          }
         },
         {
           type: 'value',
-          name: '件'
+          name: '件',
+          axisLine:{
+            show: false,//不显示y轴线
+          },
         },
       ],
       series: [
@@ -189,9 +199,21 @@ export default {
             }
           },
           areaStyle: {
-            color: '#ffac70',
+            color: '#ff8d41',
             opacity: 0.5
-          }
+          },
+          //平均线
+          markLine:{
+            data: [{type: 'average', name: '平均值'}],
+            itemStyle : {
+              normal : {
+                color:'#ffac70',
+                label : {
+                  show:true
+                }
+              }
+            },
+          },
         },
       ],
       tooltip : {
@@ -203,6 +225,41 @@ export default {
           }
         }
       },
+    };
+    myChart.setOption(option);
+
+    var myChart = echarts.init(document.getElementById('main2'));
+    option = {
+      series: [
+        {
+          type: 'pie',
+          data: [
+            {
+              value: 335,
+              name: '直接访问'
+            },
+            {
+              value: 234,
+              name: '联盟广告'
+            },
+            {
+              value: 1548,
+              name: '搜索引擎'
+            }
+          ],
+          //饼图的半径
+          radius: '40%',
+          //设置饼图的文字标签
+          label: {
+            normal: {
+              show: true,
+              position: "outside",
+              //换行
+              formatter: '{b}'+'\n'+'{d}%',
+            }
+          },
+        }
+      ]
     };
     myChart.setOption(option);
   },

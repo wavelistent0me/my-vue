@@ -13,13 +13,30 @@ import MyInput from "@/components/MyInput";
 import {mapState, mapGetters, mapMutations, mapActions} from "vuex";
 export default {
   name: "Login",
+  data:function () {
+    return {
+      username: "",
+      password: "",
+    };
+  },
   created() {
   },
   mounted() {
-
   },
   methods: {
     Login() {
+      var that = this;
+      this.$axios({
+        url:"http://localhost:8001/admin/login",
+
+            params: {
+              username: this.$refs.username.val,
+              password: this.$refs.password.val,
+            }
+          })
+          .then(res => {
+            console.log(res);
+          });
       if (this.$refs.username.val == "admin" || this.$refs.username.val == "editor") {
         this.setRole(this.$refs.username.val);
       }

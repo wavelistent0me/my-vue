@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    role: "",
+    role: "editor",
   },
   //属性的get方法
   getters: {

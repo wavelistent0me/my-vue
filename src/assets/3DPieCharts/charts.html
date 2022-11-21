@@ -40,6 +40,9 @@
 			.buttons button {
 				margin-top: 10px;
 			}
+            .name {
+                font-size: 10px !important;
+            }
 		</style>
 	</head>
 
@@ -53,7 +56,6 @@
         <script src="./jquery-1.10.2.min.js"></script>
         <script src="./data.js"></script>
         <script>
-            marketId=103494
             CameraControls.install({
                 THREE: THREE
             })
@@ -112,7 +114,7 @@
             initLight()
             initOrbitControls()
 
-            function getbli() {
+            /*function getbli() {
                 var url = serviceaddress + 'selectTradeRateByType'
                 $.ajax({
                     type: "get",
@@ -153,7 +155,7 @@
                         //alert("提交出错!");
                     }
                 });
-            }
+            }*/
             //getbli()
 
             var json = []
@@ -168,17 +170,21 @@
                 [30, -20]
             ]
             var all = 0;
-            var dayTypeList = [{id: 1, typeName: "",}];
+            var dayTypeList = [
+                {num: 20, typeName: "上传数"},
+                {num: 10, typeName: "未上传数"},
+            ];
             $(dayTypeList).each(function(i, e) {
-                all += (e.id - 0)
+                all += (e.num - 0)
             })
             $(dayTypeList).each(function(i, e) {
                 json.push({
                     name: e.typeName,
-                    value: (Math.round(e.id / all * 100)),
+                    value: (Math.round(e.num / all * 100)),
+                    //value: (Math.round(e.id / all * 100)),
                     color: allcolor[i],
                     height:allheight[i],
-                    domOffset: alldomOffset[i],
+                    domOffset: alldomOffset[4],
                     fontColor: fontColor[i]
                 })
             })

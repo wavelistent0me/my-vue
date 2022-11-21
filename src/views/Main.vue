@@ -1,24 +1,37 @@
 <template>
   <div class="page">
-    <div class="spacebetween width100">
-      <el-col :span="12">
-        <el-menu default-active="2" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff"
+    <div class="flex width100">
+      <div class="" style="width: 300px;">
+        <el-menu default-active="2" class="menu" background-color="#545c64" text-color="#fff"
                  @open="handleOpen" @close="handleClose" active-text-color="#ffd04b" router>
-          <el-menu-item index="login">
-            <i class="el-icon-menu"></i>
-            <span slot="title">登录</span>
-          </el-menu-item>
           <el-menu-item index="home">
             <i class="el-icon-menu"></i>
             <span slot="title">home</span>
           </el-menu-item>
+          <el-menu-item index="about" v-permission="['admin']">
+            <i class="el-icon-setting"></i>
+            <span slot="title">about</span>
+          </el-menu-item>
+          <el-menu-item index="index">
+            <i class="el-icon-setting"></i>
+            <span slot="title">index</span>
+          </el-menu-item>
+          <el-menu-item index="echarts">
+            <i class="el-icon-setting"></i>
+            <span slot="title">echarts</span>
+          </el-menu-item>
+          <el-menu-item index="pinchart">
+            <i class="el-icon-setting"></i>
+            <span slot="title">pinchart</span>
+          </el-menu-item>
+          <el-menu-item index="animation">
+            <i class="el-icon-setting"></i>
+            <span slot="title">Animation</span>
+          </el-menu-item>
+
           <el-menu-item index="3" disabled>
             <i class="el-icon-document"></i>
             <span slot="title">导航三</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
           </el-menu-item>
           <el-submenu index="5">
             <template slot="title">
@@ -39,7 +52,7 @@
             </el-submenu>
           </el-submenu>
         </el-menu>
-      </el-col>
+      </div>
       <router-view></router-view>
     </div>
   </div>
@@ -47,22 +60,26 @@
 
 <script>
 import store from '../store'
+import permission from '@/directive/permission/index.js'
+
 export default {
   name: "Main",
   created() {
-    console.log(store.state.role);
+    if (!store.state.role) {
+      //this.$router.push('login')
+      store.state.role = "editor";
+    }
   },
   methods: {
-    handleOpen() {
-
-    },
-    handleClose() {
-
-    },
+    handleOpen() {},
+    handleClose() {},
   },
+  directives: { permission }
 }
 </script>
 
 <style scoped>
-
+.menu {
+  min-height: 100vh;
+}
 </style>
