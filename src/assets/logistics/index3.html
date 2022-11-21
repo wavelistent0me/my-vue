@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)http://gdata.ax168.com:8180/pjdp2/pin3d/index3.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<link rel="stylesheet" href="./device.css">
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			.__base_element_body {
+				width: 0;
+				height: 0;
+				position: absolute;
+			}
+
+			body {
+				/* background-image: url('./bg.png'); */
+				/* background-size: cover; */
+				/*	background-color: #151519;*/
+			}
+
+			.app {
+				width: 250px;
+				height: 190px;
+				overflow: hidden;
+			}
+
+			.buttons {
+				position: absolute;
+				right: 10px;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.buttons button {
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+
+	<body marginwidth="0" marginheight="0" style="">
+		<div class="app">
+
+		</div>
+		<script src="./polyfill.js"></script>
+		<script src="./three.min.js"></script>
+		<script src="./camera-controls.min.js"></script>
+		<script src="./PinChart.js"></script>
+		<script src="./jquery-1.10.2.min.js"></script>
+		<script src="./data.js"></script>
+		<script>
+			marketId=103494
+			CameraControls.install({
+				THREE: THREE
+			})
+			var control
+			var scene = new THREE.Scene();
+			var camera
+			let raycaster = new THREE.Raycaster()
+			//  let fullWidth = window.innerWidth
+			//  let fullHeight = window.innerHeight
+			let fullWidth = 250
+			let fullHeight = 190
+
+			initCamera()
+
+			var renderer = new THREE.WebGLRenderer({
+				antialias: true,
+				alpha: true
+			});
+
+			renderer.setClearColor(new THREE.Color(0x000000), 0)
+			// renderer.shadowMapEnabled = true
+
+			renderer.setSize(fullWidth, fullHeight);
+			document.querySelector('.app').appendChild(renderer.domElement);
+			var clock = new THREE.Clock()
+
+			// 缩放重置相机.
+			window.addEventListener('resize', resetSize, false)
+
+			// 鼠标移动事件.
+			let mouse_position = new THREE.Vector2()
+			let select_object = null
+			document.querySelector('.app').addEventListener('mousemove', function(e) {
+				let x = e.offsetX
+				let y = e.offsetY
+				let dx = (x / fullWidth) * 2 - 1
+				let dy = 1 - (y / fullHeight) * 2
+
+				mouse_position.set(dx, dy)
+
+				switchSelectObject()
+			}, false)
+
+			document.querySelector('.app').addEventListener('click', function(e) {
+				let x = e.offsetX
+				let y = e.offsetY
+				let dx = (x / fullWidth) * 2 - 1
+				let dy = 1 - (y / fullHeight) * 2
+
+				mouse_position.set(dx, dy)
+
+				switchSelectObject()
+
+			}, false)
+
+			initLight()
+			initOrbitControls()
+
+			function getbli() {
+				var url = serviceaddress + 'getvarietyratio.do'
+				$.ajax({
+					type: "post",
+					url: url,
+					async: true,
+					dataType: "json",
+					data: {
+						marketId: marketId,
+						stattype: 2
+					},
+					success: function(data) {
+						var json = []
+						var fontColor = ['#3EC0FE', '#FCE367', '#F3817E', '#07BE7E', '#AB6CE1']
+						var allcolor = [0x3EC0FE, 0xFCE367, 0xF3817E, 0x07BE7E, 0xAB6CE1]
+						var allheight = [6, 5, 4, 3, 2]
+						var alldomOffset = [
+							[-15, -25],
+							[-15, -15],
+							[-20, 30],
+							[30, 30],
+							[30, -20]
+						]
+						$(data.body).each(function(i, e) {
+							json.push({
+								name: e.name,
+								value: parseInt(e.value * 100),
+								color: allcolor[i],
+								height: allheight[i],
+								domOffset: alldomOffset[i],
+								fontColor: fontColor[i]
+							})
+						})
+						initChart(json)
+
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						//alert("提交出错!");
+					}
+				});
+			}
+			getbli()
+
+			// 初始化相机.
+			function initCamera() {
+				const nWidth = 12
+
+				let width = fullWidth
+				let height = fullHeight
+
+				let s = height / width
+
+				let nHeight = nWidth * s
+
+				camera = new THREE.OrthographicCamera(nWidth / -2, nWidth / 2, nHeight / 2, nHeight / -2, 0, 100);
+
+				camera.up.set(0, 0, 1)
+
+				// camera.position.set(0, 0, 5)
+				camera.position.set(-0.006574206353943388, -4.9175945915520884, 3.904002330167608)
+
+			}
+
+			// 初始化灯光
+			function initLight() {
+				// 环境光
+				let ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+				// 平行光
+				let directionalLight = new THREE.DirectionalLight(0xffffff, 0.3)
+				directionalLight.position.set(-10, 10, 10)
+
+				var pointLight = new THREE.PointLight(0xffffff, 1, 20);
+				pointLight.position.set(-3, 3, 3);
+
+				scene.add(ambientLight, directionalLight, pointLight)
+
+				// 观察光源在哪里
+				// var sphereSize = 1;
+				// var pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
+				// scene.add(pointLightHelper)
+			}
+
+			// 轨道控制器
+			function initOrbitControls() {
+				control = new CameraControls(camera, document.querySelector('.app'))
+
+				// control.mouseButtons.wheel = CameraControls.ACTION.NONE
+
+				// control.mouseButtons.right = CameraControls.ACTION.DOLLY
+				// control.setTarget()
+				// 记录初始位置
+				control.saveState()
+			}
+
+			var animate = function() {
+				requestAnimationFrame(animate);
+				var delta = clock.getDelta()
+
+				randerManager.updateRender(delta)
+
+				if(control) control.update(delta)
+
+				// checkIntersection()
+
+				renderer.render(scene, camera);
+			};
+
+			animate();
+
+			//  document.getElementById('mouse_position').addEventListener('click', function () {
+			//
+			//    if (camera && control) {
+			//      console.log(JSON.stringify(camera.toJSON()))
+			//
+			//      console.log(camera.position.x, camera.position.y, camera.position.z)
+			//      let target = control.getTarget()
+			//      console.log('target', [target.x, target.y, target.z].toString())
+			//    } else {
+			//      console.warn('camera or orbitControls is null')
+			//    }
+			//  })
+
+			function switchSelectObject() {
+				let intersect = checkIntersection()
+				if(intersect === null) {
+					if(select_object !== null) {
+						select_object = null
+						selectObject()
+					}
+					return
+				}
+
+				let object = intersect.object
+
+				if(object.userData.pick) {
+					select_object = object
+					selectObject()
+				} else {
+					if(select_object !== null) {
+						select_object = null
+						selectObject()
+					}
+				}
+
+			}
+
+			function selectObject() {
+				let obj = select_object
+				scene.traverse(function(o) {
+					if(o.userData.pick) {
+						if(obj && o.uuid === obj.uuid) {
+							o.scale.set(1.2, 1.2, 1.2)
+						} else {
+							o.scale.set(1, 1, 1)
+						}
+					}
+				})
+			}
+
+			// 判断是否命中某个物体.
+			function checkIntersection() {
+				raycaster.setFromCamera(mouse_position, camera)
+
+				let intersects = raycaster.intersectObjects(scene.children, true)
+				// console.log(intersects)
+				if(intersects.length) {
+					let intersect = intersects[0]
+					return intersect
+				}
+				return null
+			}
+
+			function resetSize() {
+				const nWidth = 20
+				// let height = window.innerHeight
+				// let width = window.innerWidth
+				fullHeight = window.innerHeight
+				fullWidth = window.innerWidth
+
+				let s = height / width
+
+				let nHeight = nWidth * s
+
+				camera.left = nWidth / -2
+				camera.right = nWidth / 2
+				camera.top = nHeight / 2
+				camera.bottom = nHeight / -2
+				camera.updateProjectionMatrix()
+
+				renderer.setSize(width, height)
+			}
+		</script>
+	
+
+
+</body></html>

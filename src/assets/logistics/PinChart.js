@@ -175,6 +175,7 @@ function createCircle (size, color, z, opacity, shadow) {
 
 }
 
+
 (function (global) {
   // 组件的渲染管理
   let renders = []
@@ -205,6 +206,8 @@ function createCircle (size, color, z, opacity, shadow) {
     updateRender
   }
 })(window);
+
+
 
 (function (global) {
 
