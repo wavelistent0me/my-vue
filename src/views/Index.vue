@@ -7,6 +7,8 @@
     </div>
     <!--身份-->
     <div>您当前的身份:{{role}}</div>
+    <!--fillter-->
+    <div>fillter的使用:{{ testNum|nullToZero}}</div>
   </div>
 </template>
 
@@ -14,9 +16,23 @@
 import {mapState, mapGetters} from "vuex";
 export default {
   name: "Index",
+  data: function () {
+    return {
+      testNum: '',
+    };
+  },
   computed: {
     ...mapState(["role"]),
     ...mapGetters(["getRole"]),
+  },
+  filters: {
+    nullToZero(value) {
+      if (value == null || value == undefined || isNaN(value) || value == '') {
+        return value = 0;
+      } else {
+        return value;
+      }
+    }
   },
 }
 </script>

@@ -20,3 +20,17 @@ function show() {
     var minute = now.getMinutes();//得到分钟数
     var second = now.getSeconds();//得到秒数
 }
+
+//计算中位数
+function getMedian(arr) {
+    var concat = arr
+    //数组排序 此为升序
+    concat = concat.sort(function (a, b) {
+        return a - b;
+    })
+    if (length % 2 == 1) {
+        return (concat[(concat.length) / 2 - 0.5]);
+    } else {
+        return ((concat[concat.length / 2 - 1]) + (concat[concat.length / 2])) / 2;
+    }
+}

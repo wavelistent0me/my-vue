@@ -1,7 +1,7 @@
 <template>
   <div class="alignCenter inputBox">
     <img src="../assets/logo.png" class="inputImg">
-    <input :placeholder="placeholder" v-model="val">
+    <input class="input" :placeholder="placeholder" v-model="val">
   </div>
 </template>
 
@@ -20,19 +20,18 @@ export default {
 <style scoped>
 .inputBox {
   border: 1px solid #ffffff;
-  padding: 10px 15px;
+  padding: 20px 20px;
   border-radius: 5px;
+  background-color:  rgb(250, 255, 189);
 }
 .inputBox input {
   border: none;
   background-color: transparent;
   outline: none;/*点击不带有边框*/
-  color: #ffffff;
-  font-size: 14px;
-  width: 120px;
+  font-size: 18px;
+  width: 100%;
 }
 input::-webkit-input-placeholder {
-  color: #ffffff;
 }
 .inputImg {
   width: 20px;

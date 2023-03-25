@@ -8,12 +8,13 @@ import Login from "@/views/Login";
 import Map from "@/views/Map";
 import Main from "@/views/Main";
 import Animation from "@/views/Animation";
+import BannerList from "@/views/BannerList";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
     component: Login
   },
@@ -64,6 +65,11 @@ const routes = [
         path: '/animation',
         name: 'Animation',
         component: Animation
+      },
+      {
+        path: '/bannerlist',
+        name: 'BannerList',
+        component: BannerList
       },
     ],
   },

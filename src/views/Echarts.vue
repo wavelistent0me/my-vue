@@ -131,7 +131,7 @@ export default {
       },
       //标题与图表的距离
       grid: {
-        top:"10%"
+        top:"20%"
       },
       xAxis: {
         data: this.GetWeek()

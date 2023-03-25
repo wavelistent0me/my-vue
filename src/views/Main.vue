@@ -28,6 +28,10 @@
             <i class="el-icon-setting"></i>
             <span slot="title">Animation</span>
           </el-menu-item>
+          <el-menu-item index="bannerlist">
+            <i class="el-icon-setting"></i>
+            <span slot="title">BannerList</span>
+          </el-menu-item>
 
           <el-menu-item index="3" disabled>
             <i class="el-icon-document"></i>

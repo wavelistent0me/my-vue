@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="file" id="file" name="file" onchange="verificationPicFile(this);verificationPicFile1(this)" >
+</body>
+
+<script>
+    //验证上传文件的格式
+    function verificationPicFile(file) {
+        var fileTypes = [".jpg", ".png", ".jpeg", ".PNG", ".gif"];//文件后缀只能是这五类
+        var filePath = document.getElementById("file").value;//返回的是上传文件的路径名 例如：E:\xx\xxx.jpg
+        //当括号里面的值为0、空字符、false 、null 、undefined的时候就相当于false
+        if (filePath) {
+            var isNext = false;
+            var fileEnd = filePath.substring(filePath.indexOf("."));//截取文件名的后缀
+            for (var i = 0; i < fileTypes.length; i++) {
+                if (fileTypes[i] == fileEnd) {
+                    isNext = true;
+                    break;
+                }
+            }
+            if (!isNext) {
+                alert('不接受此文件类型');
+                document.getElementById("file").value = "";//如果文件后缀名不符合，清空已选择文件
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    //图片大小验证
+    function verificationPicFile(file) {
+        var fileSize = 0;
+        var fileMaxSize = 10240;//1M
+        var filePath = file.value;
+        if (filePath) {
+            fileSize = file.files[0].size;
+            var size = fileSize / 1024;
+            if (size > fileMaxSize) {
+                alert("文件大小不能大于1M！");
+                file.value = "";
+                return false;
+            } else if (size <= 0) {
+                alert("文件大小不能为0M！");
+                file.value = "";
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    //图片尺寸验证
+    function verificationPicFile1(file) {
+        var filePath = document.getElementById("file");
+        /*alert(filePath.files) 返回Object FileList*/
+        if (filePath.files) {
+            //读取图片数据
+            var f = filePath.files[0];//返回Object File
+            var reader = new FileReader();  //通过FileReader类型读取文件中的数据（异步文件读取）
+            reader.onload = function (e) {
+                var data = e.target.result;  //返回文件框内上传的对象
+                //加载图片获取图片真实宽度和高度
+                var image = new Image();
+                image.onload = function () {
+                    var width = image.width;
+                    var height = image.height;
+                    alert('文件像素宽：' + width + '，文件像素高：' + height + '文件大小：' + f.size + '字节');
+                    if (width == 295 & height == 413) {
+                        alert("文件尺寸符合！");
+                    } else {
+                        alert("文件尺寸应为：295*413（像素）！");
+                        document.getElementById("file").value = "";
+                        return false;
+                    }
+                };
+                image.src = data;  //img.src 应该是放在 onload 方法后边的, 因为当image的src发生改变，浏览器就会跑去加载这个src里的资源,先告诉浏览器图片加载完要怎么处理，再让它去加载图片
+            };
+
+            reader.readAsDataURL(f);//读取文件并将文件数据以URL形式保存到result属性中。 读取图像常用
+        } else {
+            return false;
+        }
+    }
+</script>
+</html>
